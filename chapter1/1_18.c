@@ -1,5 +1,5 @@
 /********************
-  print the largest line
+  delete the space after the end of the line
   ******************/
 #include <stdio.h>
 #include <stdlib.h>

@@ -1,5 +1,5 @@
 /********************
-  print the largest line
+  print the line, which size largest MAXLIMIT
   ******************/
 #include <stdio.h>
 #include <stdlib.h>

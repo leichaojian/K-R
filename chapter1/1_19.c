@@ -1,5 +1,5 @@
 /********************
-  print the largest line
+  reverse line
   ******************/
 #include <stdio.h>
 #include <stdlib.h>
