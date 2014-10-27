@@ -1,6 +1,6 @@
-/*********************
-show the word Vertical histogram
-*********************/
+/**************************
+show the words Horizontal histogram
+***************************/
 #include <stdio.h>
 
 #define IN 1		//in the word
@@ -10,9 +10,9 @@ show the word Vertical histogram
 main()
 {
 	char	arr[MAXLINE][MAXLEN];
-	int		c, state, nw, i, j, maxLen, tempMaxLen;
+	int		c, state, nw, i, j;
 
-	nw = i = j = maxLen = tempMaxLen = 0;
+	nw = i = j = 0;
 	state = OUT;
 
 	//init the arr
@@ -26,8 +26,6 @@ main()
 			//one word
 			if (state == IN){
 				arr[i++][j++] = '\0';
-				if (j > maxLen)
-					maxLen = j;
 				j = 0;
 				nw++;
 			}
@@ -43,30 +41,14 @@ main()
 			arr[i][j++] = c;
 	}
 
-
-	//maxLen:the max size of one word
-	//nw:the number of the word
-	//show the *
-	for (i = maxLen; i >= 0; i--){
-		for ( j = 0; j < nw; j++ ){
-			tempMaxLen = maxLen;
-			if (arr[j][i] != '\0'){
-				putchar('*');
-				while (--tempMaxLen)
-					putchar(' ');
-			}
-			while (tempMaxLen--)
-				putchar(' ');
-		}
-		putchar('\n');
-	}
-
-	//show the word
+	//show the word Horizontal histogram
 	for (i = 0; i < nw; i++){
 		for (j = 0; arr[i][j] != '\0'; j++){
 			putchar(arr[i][j]);
 		}
-		while (j++ < maxLen)
-			putchar(' ');
+		putchar(':');
+		while (j--)
+			putchar('*');
+		putchar('\n');
 	}
 }
