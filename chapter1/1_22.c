@@ -108,4 +108,8 @@ void delLine(char strArr[MAXLEN][MAXLEN], int lenArr[MAXLEN], int len, int colNu
 		}
 		printf("\n");
 	}
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 13d52e0c73dfd49473f3ab9a1b42a122c6c14dfb

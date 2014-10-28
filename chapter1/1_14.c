@@ -22,7 +22,7 @@ main()
 
 	i = j = 0;
 	while ((c = getchar()) != EOF){
-		if (c == ' ' | c == '\t' || c == '\n'){
+		if (c == ' ' || c == '\t' || c == '\n'){
 			//one word
 			if (state == IN){
 				arr[i++][j++] = '\0';
