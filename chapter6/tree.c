@@ -1,62 +1,80 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
 
 #define MAXWORD 100
 
-struct key{
+struct tnode {
 	char	*word;
 	int		count;
-} keytab[] = {{"auto", 0}, {"break", 0}, {"case", 0}, {"char", 0}, {"const", 0}, 
-{"continue", 0}, {"default", 0}, {"unsigned", 0}, {"void", 0}, {"volatile", 0}, {"while", 0}};
-
+	struct 	tnode *left;
+	struct 	tnode *right;
+};
+struct tnode *addtree(struct tnode *, char *);
+void treeprint(struct tnode *);
 int getword(char *, int);
-int binsearch(char *, struct key *, int);
 
 int main(void)
 {
-	int	n;
+	struct 	tnode *root;
 	char	word[MAXWORD];
-	int	NKEYS = sizeof(keytab) / sizeof(*keytab);
 
+	root = NULL;
 	while (getword(word, MAXWORD) != EOF){
 		if (isalpha(word[0]) || '_' == word[0]){
-			if ((n = binsearch(word, keytab, NKEYS)) >= 0){
-				keytab[n].count++;
-			}
+			root = addtree(root, word);
 		}
 	}
-
-	for (n = 0; n < NKEYS; n++){
-		if (keytab[n].count > 0){
-			printf("%4d %s\n", keytab[n].count, keytab[n].word);
-		}
-	}
+	treeprint(root);
 
 	return 0;
 }
 
-int binsearch(char *word, struct key *tab, int n)
+struct tnode *talloc(void);
+char *strdup(char *);
+struct tnode *addtree(struct tnode *p, char *w)
 {
-	int		cond;
-	int		low, high, mid;
-
-	low = 0;
-	high = n - 1;
-	while (low <= high){
-		mid = (low + high) / 2;
-		if ((cond = strcmp(word, tab[mid].word)) < 0){
-			high = mid - 1;
-		}
-		else if (cond > 0){
-			low = mid + 1;
-		}
-		else {
-			return mid;
-		}
+	int cond;
+	if (NULL == p){
+		p = talloc();
+		p->word = strdup(w);
+		p->count = 1;
+		p->left = p->right = NULL;
+	} else if ((cond = strcmp(w, p->word)) == 0){
+		p->count++;
+	} else if (cond < 0){
+		p->left = addtree(p->left, w);
+	} else{
+		p->right = addtree(p->right, w);
 	}
 
-	return -1;
+	return p;
+}
+
+void treeprint(struct tnode *p)
+{
+	if (p != NULL){
+		treeprint(p->left);
+		printf("%4d %s\n", p->count, p->word);
+		treeprint(p->right);
+	}
+}
+
+struct tnode *talloc(void)
+{
+	return (struct tnode *)malloc(sizeof(struct tnode));
+}
+
+char *strdup(char *s)
+{
+	char	*p;
+	p = (char *)malloc(strlen(s) + 1);
+	if (p != NULL){
+		strcpy(p, s);
+	}
+
+	return p;
 }
 
 int getch(void);
