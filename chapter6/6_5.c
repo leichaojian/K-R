@@ -35,34 +35,29 @@ int main(void)
 	return 0;
 }
 
-void undef(char *s)
+void undef( char *s )
 {
-	int		i = 0;
-	struct nlist *np;
-	struct nlist *pHead;
+	int h;
+	struct nlist *prev, *np;
 
-	for (i = 0; i < HASHSIZE; i++){
-		np = hashtab[i];
-		pHead = hashtab[i];
-		//如果是头结点删除
-		if (np != NULL){
-			if (0 == strcmp(np->name, s)){
-				free(np->name);
-				free(np->defn);
-				hashtab[i] = NULL;
-				return;
-			}
+	prev = NULL;
+	h = hash( s );
+	for ( np = hashtab[ h ]; np != NULL; np = np->next ){
+		if ( strcmp( s, np->name ) == 0 ){
+			break;
 		}
-
-		for (; np != NULL; pHead = np, np = np->next){
-			if (strcmp(np->name, s) == 0){
-				pHead->next = np->next;
-				free(np->name);
-				free(np->defn);
-				np = NULL;
-				return;
-			}
+		prev = np;
+	}
+	if ( np != NULL ){
+		if ( prev == NULL ){
+			hashtab[ h ] = np->next;
 		}
+		else{
+			prev->next = np->next;
+		}
+		free( ( void * )np->name );
+		free( ( void * )np->defn );
+		free( ( void * )np );
 	}
 }
 
